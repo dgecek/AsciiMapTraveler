@@ -1,6 +1,5 @@
 package eu.dgecek.asciimaptraveler
 
-data class AsciiMap(
-
-        val map: String
+inline class AsciiMap(
+        val mapString: String
 )
