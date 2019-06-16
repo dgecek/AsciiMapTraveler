@@ -48,7 +48,14 @@ class MapTravelerImpl : MapTraveler {
             END_CHAR -> travelResultFromMapSteps(mapSteps)
             START_CHAR -> findFirstStep(asciiMap, mapSteps)
             CROSSROAD_CHAR -> findNextStepOnCrossroad(asciiMap, mapSteps)
-            else -> continueOnPath(asciiMap, mapSteps)
+            else -> {
+                if (lastStep.character.isLetter()) {
+                    //letters can be crossroads
+                    findNextStepOnCrossroad(asciiMap, mapSteps)
+                } else {
+                    continueOnPath(asciiMap, mapSteps)
+                }
+            }
         }
     }
 
@@ -111,7 +118,7 @@ class MapTravelerImpl : MapTraveler {
             MapPathDirection.RIGHT -> continueOnPathInDirection(asciiMap, mapSteps, lastStep.x + 1, lastStep.y, MapPathDirection.RIGHT)
             MapPathDirection.DOWN -> continueOnPathInDirection(asciiMap, mapSteps, lastStep.x, lastStep.y + 1, MapPathDirection.DOWN)
             MapPathDirection.LEFT -> continueOnPathInDirection(asciiMap, mapSteps, lastStep.x - 1, lastStep.y, MapPathDirection.LEFT)
-            MapPathDirection.NONE -> throwPathCutException()
+            MapPathDirection.NONE -> throwPathCutException(mapSteps)
         }
     }
 
@@ -120,10 +127,10 @@ class MapTravelerImpl : MapTraveler {
             getMapStepAtPosition(asciiMap, x, y, direction)?.let {
                 mapSteps.add(it)
                 findPathRecursively(asciiMap, mapSteps)
-            } ?: throwPathCutException()
+            } ?: throwPathCutException(mapSteps)
 
-    private fun throwPathCutException(): TravelResult = throw IllegalArgumentException("Path is cut. Illegal map given.")
-
+    private fun throwPathCutException(mapSteps: MutableList<MapStep>): TravelResult =
+            throw IllegalArgumentException("Path is cut. Illegal map given. Steps: $mapSteps")
 
     private fun travelResultFromMapSteps(mapSteps: MutableList<MapStep>): TravelResult {
         return TravelResult(
