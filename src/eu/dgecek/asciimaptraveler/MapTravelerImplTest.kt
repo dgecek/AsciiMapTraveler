@@ -1,6 +1,6 @@
 package eu.dgecek.asciimaptraveler
 
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 
@@ -17,7 +17,7 @@ internal class MapTravelerImplTest {
                 "      +---+"
 
         val result = mapTraveler.findThePath(AsciiMap(mapString))
-        assertTrue(result.collectedLetters == "ACB")
-        assertTrue(result.path == "@---A---+|C|+---+|+-B-x")
+        assertEquals("ACB", result.collectedLetters)
+        assertEquals("@---A---+|C|+---+|+-B-x", result.path)
     }
 }
