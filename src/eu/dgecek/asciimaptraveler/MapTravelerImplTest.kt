@@ -2,6 +2,8 @@ package eu.dgecek.asciimaptraveler
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import java.lang.IllegalArgumentException
 
 
 internal class MapTravelerImplTest {
@@ -54,5 +56,19 @@ internal class MapTravelerImplTest {
         val result = mapTraveler.findThePath(AsciiMap(mapString))
         assertEquals("BEEFCAKE", result.collectedLetters)
         assertEquals("@---+B||E--+|E|+--F--+|C|||A--|-----K|||+--E--Ex", result.path)
+    }
+
+    @Test
+    fun shouldThrowExceptionWhenGivenMapWithLoop() {
+        val mapString =
+                "  @-A-----+\n" +
+                "      |   |\n" +
+                "      +   C\n" +
+                "      |   |\n" +
+                "      +---+"
+
+        assertThrows<IllegalArgumentException> {
+            mapTraveler.findThePath(AsciiMap(mapString))
+        }
     }
 }
