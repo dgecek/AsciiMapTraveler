@@ -32,8 +32,27 @@ internal class MapTravelerImplTest {
                 "    |      x\n" +
                 "    |      |\n" +
                 "    +---D--+"
+
         val result = mapTraveler.findThePath(AsciiMap(mapString))
         assertEquals("ABCD", result.collectedLetters)
         assertEquals("@|A+---B--+|+----C|-||+---D--+|x", result.path)
+    }
+
+    @Test
+    fun shouldFindThePathWhenLetterIsTwiceOnPath(){
+        val mapString =
+                "  @---+\n" +
+                "      B\n" +
+                "K-----|--A\n" +
+                "|     |  |\n" +
+                "|  +--E  |\n" +
+                "|  |     |\n" +
+                "+--E--Ex C\n" +
+                "   |     |\n" +
+                "   +--F--+"
+
+        val result = mapTraveler.findThePath(AsciiMap(mapString))
+        assertEquals("BEEFCAKE", result.collectedLetters)
+        assertEquals("@---+B||E--+|E|+--F--+|C|||A--|-----K|||+--E--Ex", result.path)
     }
 }

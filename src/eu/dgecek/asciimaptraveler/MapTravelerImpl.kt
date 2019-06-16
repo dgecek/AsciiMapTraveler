@@ -102,7 +102,21 @@ class MapTravelerImpl : MapTraveler {
             throw IllegalArgumentException("Cannot find direction on crossroad.")
         }
 
-        mapSteps.add(legitSteps[0])
+        val nextStep =
+                if (legitSteps.size > 1) {
+                    //try to go straight
+                    when (lastDirection) {
+                        MapPathDirection.UP -> upStep
+                        MapPathDirection.DOWN -> downStep
+                        MapPathDirection.LEFT -> leftStep
+                        MapPathDirection.RIGHT -> rightStep
+                        else -> legitSteps[0]
+                    }
+                } else {
+                    legitSteps[0]
+                } ?: legitSteps[0]
+
+        mapSteps.add(nextStep)
         return findPathRecursively(asciiMap, mapSteps)
     }
 
@@ -135,6 +149,7 @@ class MapTravelerImpl : MapTraveler {
     private fun travelResultFromMapSteps(mapSteps: MutableList<MapStep>): TravelResult {
         return TravelResult(
                 mapSteps.filter { it.character.isLetter() && it.character != END_CHAR }
+                        .distinctBy { Pair(it.x, it.y) }
                         .map { it.character }
                         .joinToString(separator = ""),
                 mapSteps.map { it.character }
