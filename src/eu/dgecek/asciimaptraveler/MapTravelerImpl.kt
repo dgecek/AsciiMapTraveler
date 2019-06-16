@@ -24,7 +24,7 @@ class MapTravelerImpl : MapTraveler {
         mapString.forEach { char ->
             when (char) {
                 START_CHAR -> {
-                    return MapStep(column, line, char)
+                    return MapStep(column, line, char, MapPathDirection.NONE)
                 }
                 NEW_LINE_CHAR -> {
                     line++
@@ -79,9 +79,24 @@ class MapTravelerImpl : MapTraveler {
         if (mapSteps.isEmpty()) {
             throw IllegalArgumentException("Got empty mapSteps on crossroad.")
         }
-        
 
+        val lastStep = mapSteps[mapSteps.size - 1]
+        val lastDirection = lastStep.direction
 
+        //don't go back
+        val upStep = if (lastDirection == MapPathDirection.DOWN) null else getMapStepAtPosition(asciiMap, lastStep.x, lastStep.y - 1, MapPathDirection.UP)
+        val downStep = if (lastDirection == MapPathDirection.UP) null else getMapStepAtPosition(asciiMap, lastStep.x, lastStep.y + 1, MapPathDirection.DOWN)
+        val leftStep = if (lastDirection == MapPathDirection.RIGHT) null else getMapStepAtPosition(asciiMap, lastStep.x - 1, lastStep.y, MapPathDirection.LEFT)
+        val rightStep = if (lastDirection == MapPathDirection.LEFT) null else getMapStepAtPosition(asciiMap, lastStep.x + 1, lastStep.y, MapPathDirection.RIGHT)
+
+        val legitSteps = listOfNotNull(upStep, downStep, leftStep, rightStep)
+
+        if (legitSteps.isEmpty()) {
+            throw IllegalArgumentException("Cannot find direction on crossroad.")
+        }
+
+        mapSteps.add(legitSteps[0])
+        return findPathRecursively(asciiMap, mapSteps)
     }
 
     private fun continueOnPath(asciiMap: AsciiMap, mapSteps: MutableList<MapStep>): TravelResult {
@@ -112,11 +127,11 @@ class MapTravelerImpl : MapTraveler {
 
     private fun travelResultFromMapSteps(mapSteps: MutableList<MapStep>): TravelResult {
         return TravelResult(
-                mapSteps.filter { it.character.isLetter() }
+                mapSteps.filter { it.character.isLetter() && it.character != END_CHAR }
                         .map { it.character }
-                        .joinToString(),
+                        .joinToString(separator = ""),
                 mapSteps.map { it.character }
-                        .joinToString { }
+                        .joinToString(separator = "")
         )
     }
 
