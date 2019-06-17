@@ -16,7 +16,7 @@ class MapTravelerImpl : MapTraveler {
     }
 
     private fun findStartOfThePath(asciiMap: AsciiMap): MapStep {
-        val lines = asciiMap.asciiMapLines
+        val lines = asciiMap.structure
 
         lines.forEachIndexed { lineIndex, line ->
             line.forEachIndexed { columnIndex, char ->
@@ -148,7 +148,7 @@ class MapTravelerImpl : MapTraveler {
     }
 
     private fun getMapStepAtPosition(asciiMap: AsciiMap, x: Int, y: Int, direction: MapPathDirection): MapStep? {
-        val lines = asciiMap.asciiMapLines
+        val lines = asciiMap.structure
         val line = lines.getOrNull(y)
         val char = line?.getOrNull(x)
         return char?.let {
