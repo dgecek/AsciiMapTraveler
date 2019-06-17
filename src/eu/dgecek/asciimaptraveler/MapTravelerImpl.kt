@@ -6,7 +6,6 @@ class MapTravelerImpl : MapTraveler {
 
     companion object {
         private const val START_CHAR = '@'
-        private const val NEW_LINE_CHAR = '\n'
         private const val END_CHAR = 'x'
         private const val CROSSROAD_CHAR = '+'
     }
@@ -17,21 +16,12 @@ class MapTravelerImpl : MapTraveler {
     }
 
     private fun findStartOfThePath(asciiMap: AsciiMap): MapStep {
-        var line = 0
-        var column = 0
-        val mapString = asciiMap.mapString
+        val lines = asciiMap.asciiMapLines
 
-        mapString.forEach { char ->
-            when (char) {
-                START_CHAR -> {
-                    return MapStep(column, line, char, MapPathDirection.NONE)
-                }
-                NEW_LINE_CHAR -> {
-                    line++
-                    column = 0
-                }
-                else -> {
-                    column++
+        lines.forEachIndexed { lineIndex, line ->
+            line.forEachIndexed { columnIndex, char ->
+                if (char == START_CHAR) {
+                    return MapStep(columnIndex, lineIndex, char, MapPathDirection.NONE)
                 }
             }
         }
@@ -98,7 +88,7 @@ class MapTravelerImpl : MapTraveler {
 
         val legitSteps = listOfNotNull(upStep, downStep, leftStep, rightStep)
 
-        if (legitSteps.isEmpty()) {
+        if (legitSteps.isEmpty() || legitSteps.size == 2) {
             throw IllegalArgumentException("Cannot find direction on crossroad.")
         }
 
@@ -158,7 +148,7 @@ class MapTravelerImpl : MapTraveler {
     }
 
     private fun getMapStepAtPosition(asciiMap: AsciiMap, x: Int, y: Int, direction: MapPathDirection): MapStep? {
-        val lines = asciiMap.mapString.split(NEW_LINE_CHAR)
+        val lines = asciiMap.asciiMapLines
         val line = lines.getOrNull(y)
         val char = line?.getOrNull(x)
         return char?.let {

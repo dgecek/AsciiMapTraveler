@@ -19,7 +19,7 @@ internal class MapTravelerImplTest {
                 "      |   |\n" +
                 "      +---+"
 
-        val result = mapTraveler.findThePath(AsciiMap(mapString))
+        val result = mapTraveler.findThePath(AsciiMap.fromAsciiMapString(mapString))
         assertEquals("ACB", result.collectedLetters)
         assertEquals("@---A---+|C|+---+|+-B-x", result.path)
     }
@@ -35,7 +35,7 @@ internal class MapTravelerImplTest {
                 "    |      |\n" +
                 "    +---D--+"
 
-        val result = mapTraveler.findThePath(AsciiMap(mapString))
+        val result = mapTraveler.findThePath(AsciiMap.fromAsciiMapString(mapString))
         assertEquals("ABCD", result.collectedLetters)
         assertEquals("@|A+---B--+|+----C|-||+---D--+|x", result.path)
     }
@@ -53,14 +53,14 @@ internal class MapTravelerImplTest {
                 "   |     |\n" +
                 "   +--F--+"
 
-        val result = mapTraveler.findThePath(AsciiMap(mapString))
+        val result = mapTraveler.findThePath(AsciiMap.fromAsciiMapString(mapString))
         assertEquals("BEEFCAKE", result.collectedLetters)
         assertEquals("@---+B||E--+|E|+--F--+|C|||A--|-----K|||+--E--Ex", result.path)
     }
 
     @Test
     fun shouldThrowExceptionWhenGivenMapWithLoop() {
-        val mapString =
+        val mapStringLoopRight =
                 "  @-A-----+\n" +
                 "      |   |\n" +
                 "      +   C\n" +
@@ -68,7 +68,18 @@ internal class MapTravelerImplTest {
                 "      +---+"
 
         assertThrows<IllegalArgumentException> {
-            mapTraveler.findThePath(AsciiMap(mapString))
+            mapTraveler.findThePath(AsciiMap.fromAsciiMapString(mapStringLoopRight))
+        }
+
+        val mapStringLoopLeft =
+                " ----+  \n" +
+                " |   |  \n" +
+                " +   C  \n" +
+                " |   |  \n" +
+                " +---+---A-@"
+
+        assertThrows<IllegalArgumentException> {
+            mapTraveler.findThePath(AsciiMap.fromAsciiMapString(mapStringLoopLeft))
         }
     }
 }
