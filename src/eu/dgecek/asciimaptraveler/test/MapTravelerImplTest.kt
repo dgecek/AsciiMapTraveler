@@ -1,10 +1,12 @@
-package eu.dgecek.asciimaptraveler
+package eu.dgecek.asciimaptraveler.test
 
+import eu.dgecek.asciimaptraveler.MapTraveler
+import eu.dgecek.asciimaptraveler.MapTravelerImpl
+import eu.dgecek.asciimaptraveler.model.AsciiMap
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
-
 
 internal class MapTravelerImplTest {
 

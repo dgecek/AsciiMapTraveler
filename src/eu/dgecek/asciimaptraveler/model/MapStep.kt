@@ -1,4 +1,4 @@
-package eu.dgecek.asciimaptraveler
+package eu.dgecek.asciimaptraveler.model
 
 data class MapStep(
         val x: Int,

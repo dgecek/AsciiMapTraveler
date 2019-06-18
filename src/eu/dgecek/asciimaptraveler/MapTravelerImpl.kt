@@ -1,5 +1,9 @@
 package eu.dgecek.asciimaptraveler
 
+import eu.dgecek.asciimaptraveler.model.AsciiMap
+import eu.dgecek.asciimaptraveler.model.MapPathDirection
+import eu.dgecek.asciimaptraveler.model.MapStep
+import eu.dgecek.asciimaptraveler.model.TravelResult
 import java.lang.IllegalArgumentException
 
 class MapTravelerImpl : MapTraveler {

@@ -1,4 +1,4 @@
-package eu.dgecek.asciimaptraveler
+package eu.dgecek.asciimaptraveler.model
 
 inline class AsciiMap(val structure: Array<Array<Char>>) {
 

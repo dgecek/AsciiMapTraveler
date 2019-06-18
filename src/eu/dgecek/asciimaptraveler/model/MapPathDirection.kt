@@ -1,4 +1,4 @@
-package eu.dgecek.asciimaptraveler
+package eu.dgecek.asciimaptraveler.model
 
 sealed class MapPathDirection {
 

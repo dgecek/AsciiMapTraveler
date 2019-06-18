@@ -1,5 +1,8 @@
 package eu.dgecek.asciimaptraveler
 
+import eu.dgecek.asciimaptraveler.model.AsciiMap
+import eu.dgecek.asciimaptraveler.model.TravelResult
+
 interface MapTraveler {
 
     /**
